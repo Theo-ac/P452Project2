@@ -3,3 +3,11 @@ qiskit-aer
 matplotlib
 numpy
 pylatexenc
+math 
+comb
+time
+scipy
+itertools
+combinations
+warnings
+quspin
