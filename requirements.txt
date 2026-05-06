@@ -4,7 +4,4 @@ matplotlib
 numpy
 pylatexenc
 scipy
-itertools
-combinations
-warnings
 quspin
