@@ -3,7 +3,6 @@ qiskit-aer
 matplotlib
 numpy
 pylatexenc
-time
 scipy
 itertools
 combinations
