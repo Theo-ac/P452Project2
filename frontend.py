@@ -5,12 +5,12 @@ from backend import bose_fermi_profiles
 from qiskit.quantum_info import Statevector
 from qiskit.visualization import plot_histogram
 st.title("Theo's Density Profile Calculator")
-gb = st.text_input("Enter a value for g_B", value = 0.0)
-gbf = st.text_input("Enter a value for g_BF", value = 0.0)
-wb = st.text_input("Enter a value for w_B", value = 0.0)
-wf = st.text_input("Enter a value for w_F", value = 0.0)
-mb = st.text_input("Enter a value for m_B", value = 0.0)
-mf = st.text_input("Enter a value for m_F", value = 0.0)
+gb = float(st.text_input("Enter a value for g_B", value = 0.0))
+gbf = float(st.text_input("Enter a value for g_BF", value = 0.0))
+wb = float(st.text_input("Enter a value for w_B", value = 0.0))
+wf = float(st.text_input("Enter a value for w_F", value = 0.0))
+mb = float(st.text_input("Enter a value for m_B", value = 0.0))
+mf = float(st.text_input("Enter a value for m_F", value = 0.0))
 
 nb, nf = 1000.0, 500.0
 
