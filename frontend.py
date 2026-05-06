@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
-#from backend import
+from backend import bose_fermi_profiles
 from qiskit.quantum_info import Statevector
 from qiskit.visualization import plot_histogram
 st.title("Theo's Density Profile Calculator")
