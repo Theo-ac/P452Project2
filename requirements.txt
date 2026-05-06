@@ -3,7 +3,7 @@ qiskit-aer
 matplotlib
 numpy
 pylatexenc
-math 
+math
 comb
 time
 scipy
