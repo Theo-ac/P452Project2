@@ -5,12 +5,14 @@ from backend import bose_fermi_profiles
 from qiskit.quantum_info import Statevector
 from qiskit.visualization import plot_histogram
 st.title("Theo's Density Profile Calculator")
-gb = float(st.text_input("Enter a value for g_B", value = 1.0))
+# Physical parameters (hbar=1, mb=1, wb=1)
+# Inspired by Rb-87 bosons + K-40 fermions
+gb = float(st.text_input("Enter a value for g_B", value = 0.5))
 gbf = float(st.text_input("Enter a value for g_BF", value = 0.0))
 wb = float(st.text_input("Enter a value for w_B", value = 1.0))
 wf = float(st.text_input("Enter a value for w_F", value = 1.0))
 mb = float(st.text_input("Enter a value for m_B", value = 1.0))
-mf = float(st.text_input("Enter a value for m_F", value = 1.0))
+mf = float(st.text_input("Enter a value for m_F", value = 40/87))
 
 nb, nf = 1000.0, 500.0
 label = ""
@@ -22,7 +24,12 @@ elif gbf > 0.0:
             label = "Weak Repulsion"
 else:
             label = "Attraction"
-            
+r_ref, nB_ref, nF_ref, _, _ = bose_fermi_profiles(**params, gBF=0.0)
+cum_B = np.cumsum(nB_ref * r_ref**2) / (np.sum(nB_ref * r_ref**2) + 1e-30)
+cum_F = np.cumsum(nF_ref * r_ref**2) / (np.sum(nF_ref * r_ref**2) + 1e-30)
+xlim_max = max(r_ref[np.searchsorted(cum_B, 0.999)],
+               r_ref[np.searchsorted(cum_F, 0.999)]) * 1.4
+
 fig, ax = plt.subplots()
 r, nB, nF, muB, muF = bose_fermi_profiles(nb, nf, mb, mf, wb, wf, gb, gbf)
 ax.plot(r, nB, label='nB(r)  bosons', color='tab:blue', lw=2)
