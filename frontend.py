@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
-from backend import bose_fermi_profiles
+from backend import bose_fermi_profiles, tf_radius
 from qiskit.quantum_info import Statevector
 from qiskit.visualization import plot_histogram
 st.title("Theo's Density Profile Calculator")
@@ -36,7 +36,8 @@ else:
 
 fig, ax = plt.subplots()
 r, nB, nF, muB, muF = bose_fermi_profiles(NB, NF, mb, mf, wb, wf, gb, gbf)
-
+RTF_B=tf_radius(r, nB),
+RTF_F=tf_radius(r, nF),
 param_str = (f'Assumptions (dimensionless HO units), \n'
              f'  hbar = mB = omegaB = 1  →  a_ho = 1, \n'
              f'  mF = 40/87 = {mf:.3f}  (K-40 / Rb-87), \n'
@@ -48,6 +49,10 @@ ax.plot(r, nF, label='nF(r)  fermions', color='tab:orange', lw=2, ls='--')
 ax.set_title(label, fontsize=10)
 ax.set_xlabel(r'$r\;/\;a_{ho}$')
 ax.set_ylabel(r'density $n(r)\;[a_{ho}^{-3}]$')
+ax.axvline(RTF_B, color='tab:blue',   lw=1, ls=':', alpha=0.7,
+               label=fr"$R_{{TF,B}}={d['RTF_B']:.2f}$")
+ax.axvline(RTF_F, color='tab:orange', lw=1, ls=':', alpha=0.7,
+               label=fr"$R_{{TF,F}}={d['RTF_F']:.2f}$")
 ax.legend(fontsize=8)
 ax.grid(alpha=0.3)
 ax.set_xlim(0, xlim_max)
