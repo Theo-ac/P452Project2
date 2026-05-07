@@ -16,9 +16,9 @@ nb, nf = 1000.0, 500.0
 label = ""
 if gbf == 0:
             label = "Non-interacting"
-else if gbf == gb:
+elif gbf == gb:
             label = "Strong Repulsion"
-else if gbf > 0:
+elif gbf > 0:
             label = "Weak Repulsion"
 else:
             label = "Attraction"
