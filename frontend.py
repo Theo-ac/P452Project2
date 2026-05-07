@@ -15,20 +15,24 @@ mb = float(st.text_input("Enter a value for m_B", value = 1.0))
 mf = float(st.text_input("Enter a value for m_F", value = 40/87))
 
 nb, nf = 1000.0, 500.0
-label = ""
-if gbf == 0.0:
-            label = "Non-interacting"
-elif gbf == gb:
-            label = "Strong Repulsion"
-elif gbf > 0.0:
-            label = "Weak Repulsion"
-else:
-            label = "Attraction"
+
 r_ref, nB_ref, nF_ref, _, _ = bose_fermi_profiles(nb, nf, mb, mf, wb, wf, gb, gBF=0.0)
 cum_B = np.cumsum(nB_ref * r_ref**2) / (np.sum(nB_ref * r_ref**2) + 1e-30)
 cum_F = np.cumsum(nF_ref * r_ref**2) / (np.sum(nF_ref * r_ref**2) + 1e-30)
 xlim_max = max(r_ref[np.searchsorted(cum_B, 0.999)],
                r_ref[np.searchsorted(cum_F, 0.999)]) * 1.4
+
+nfcenter = nF_ref[1]
+label = ""
+dmuF  = (6*np.pi**2 * nf)**(2/3) / (3 * mf * nf)
+if gbf == 0.0:
+            label = "Non-interacting"
+elif gbf**2 >= gb *dmuF :
+            label = "Strong Repulsion" if gbf > 0 else "Collapse (strong attraction)"
+elif gbf > 0.0:
+            label = "Weak Repulsion"
+else:
+            label = "Attraction"
 
 fig, ax = plt.subplots()
 r, nB, nF, muB, muF = bose_fermi_profiles(nb, nf, mb, mf, wb, wf, gb, gbf)
