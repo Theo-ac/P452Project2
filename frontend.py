@@ -14,9 +14,9 @@ wf = float(st.text_input("Enter a value for w_F", value = 1.0))
 mb = float(st.text_input("Enter a value for m_B", value = 1.0))
 mf = float(st.text_input("Enter a value for m_F", value = 40/87))
 
-nb, nf = 1000.0, 500.0
+NB, NF = 1000.0, 500.0
 
-r_ref, nB_ref, nF_ref, _, _ = bose_fermi_profiles(nb, nf, mb, mf, wb, wf, gb, gBF=0.0)
+r_ref, nB_ref, nF_ref, _, _ = bose_fermi_profiles(NB, NF, mb, mf, wb, wf, gb, gBF=0.0)
 cum_B = np.cumsum(nB_ref * r_ref**2) / (np.sum(nB_ref * r_ref**2) + 1e-30)
 cum_F = np.cumsum(nF_ref * r_ref**2) / (np.sum(nF_ref * r_ref**2) + 1e-30)
 xlim_max = max(r_ref[np.searchsorted(cum_B, 0.999)],
@@ -35,7 +35,14 @@ else:
             label = "Attraction"
 
 fig, ax = plt.subplots()
-r, nB, nF, muB, muF = bose_fermi_profiles(nb, nf, mb, mf, wb, wf, gb, gbf)
+r, nB, nF, muB, muF = bose_fermi_profiles(NB, NF, mb, mf, wb, wf, gb, gbf)
+
+param_str = (f'Assumptions (dimensionless HO units)\n'
+             f'  hbar = mB = omegaB = 1  →  a_ho = 1\n'
+             f'  mF = 40/87 = {mf:.3f}  (K-40 / Rb-87)\n'
+             f'  omegaF = {wf},  gB = {gb}\n'
+             f'  NB = {NB},  NF = {NF}')
+
 ax.plot(r, nB, label='nB(r)  bosons', color='tab:blue', lw=2)
 ax.plot(r, nF, label='nF(r)  fermions', color='tab:orange', lw=2, ls='--')
 ax.set_title(label, fontsize=10)
