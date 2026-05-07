@@ -52,7 +52,7 @@ ax.set_ylabel(r'density $n(r)\;[a_{ho}^{-3}]$')
 ax.axvline(RTF_B, color='tab:blue',   lw=1, ls=':', alpha=0.7,
                label=fr"$R_{{TF,B}}"+str(RTF_B)+"$")
 ax.axvline(RTF_F, color='tab:orange', lw=1, ls=':', alpha=0.7,
-               label=fr"$R_{{TF,F}}={RTF_F}$"))
+               label=fr"$R_{{TF,F}}"+str(RTF_F)+"$")
 ax.legend(fontsize=8)
 ax.grid(alpha=0.3)
 ax.set_xlim(0, xlim_max)
