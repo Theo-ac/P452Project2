@@ -7,7 +7,7 @@ from qiskit.visualization import plot_histogram
 st.title("Theo's Density Profile Calculator")
 # Physical parameters (hbar=1, mb=1, wb=1)
 # Inspired by Rb-87 bosons + K-40 fermions
-gb = float(st.text_input("Enter a value for g_B", value = 0.5))
+gb = float(st.text_input("Enter a value for g_B (expecting > 0)", value = 0.5))
 gbf = float(st.text_input("Enter a value for g_BF", value = 0.0))
 wb = float(st.text_input("Enter a value for w_B", value = 1.0))
 wf = float(st.text_input("Enter a value for w_F", value = 1.0))
