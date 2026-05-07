@@ -54,6 +54,10 @@ ax.set_xlim(0, xlim_max)
 ax.annotate(f'muB={muB:.3f}, muF={muF:.3f}',
             xy=(0.98, 0.95), xycoords='axes fraction',
             ha='right', va='top', fontsize=8)
+
+fig.text(0.01, 0.01, param_str, fontsize=8, va='bottom', family='monospace',
+         bbox=dict(boxstyle='round', fc='lightyellow', alpha=0.9))
+
 fig.suptitle('Bose-Fermi Mixture Density Profiles (TF/LDA, spherical harmonic trap)',
              fontsize=12)
 st.pyplot(fig)
