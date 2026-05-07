@@ -112,20 +112,18 @@ def h_sweep_from_spectrum(spectrum, N, h_vals, n_lowest=6):
 def bose_fermi_profiles(NB, NF, mB, mF, omegaB, omegaF, gB, gBF,
                         r_max=None, Nr=600, tol=1e-5, max_iter=200, mix=0.4):
     """
-    Self-consistent Thomas-Fermi / LDA density profiles for a spherical
-    Bose-Fermi mixture in a harmonic trap.
+    Self-consistent TF/LDA density profiles for a spherical Bose-Fermi mixture
+    in a harmonic trap. Units: hbar = 1 throughout.
 
-    Convention: hbar = 1.
-    TF (bosons):   nB(r) = max(0, (muB - VB(r) - gBF*nF(r)) / gB)
-    LDA (fermions): nF(r) = (1/6pi^2) * (2*mF*max(0, muF - VF(r) - gBF*nB(r)))^(3/2)
+    TF (bosons):    nB(r) = max(0, (muB - VB(r) - gBF*nF(r)) / gB)
+    LDA (fermions): nF(r) = (2*mF*max(0, muF - VF(r) - gBF*nB(r)))^(3/2) / (6*pi^2)
     """
     if r_max is None:
-        # BEC Thomas-Fermi radius: R_TF = (15 gB NB / (4π mB ω²))^(1/5)
-        RTF_B = (15.0 * gB * NB / (4.0 * np.pi * mB * omegaB**2.0))**0.2 * 2.0
-        # Fermi radius from 3D harmonic trap: E_F = (6 N_F)^(1/3) ħω,
-        # R_F = sqrt(2 E_F / (m_F ω²))
-        EF_est = (6.0 * NF)**(1/3)
-        RTF_F = np.sqrt(2.0 * EF_est / (mF * omegaF**2)) * 1.5
+        # BEC Thomas-Fermi radius: R_TF = (15 gB NB / (4pi mB omega^2))^(1/5)
+        RTF_B = (15 * gB * NB / (4 * np.pi * mB * omegaB**2))**0.2 * 2.0
+        # Fermi radius: E_F = (6*NF)^(1/3) hbar*omega, R_F = sqrt(2 E_F / (mF omega^2))
+        EF_est = (6 * NF)**(1/3)
+        RTF_F = np.sqrt(2 * EF_est / (mF * omegaF**2)) * 1.5
         r_max = max(RTF_B, RTF_F) * 1.5
 
     r  = np.linspace(0, r_max, Nr)
@@ -133,48 +131,42 @@ def bose_fermi_profiles(NB, NF, mB, mF, omegaB, omegaF, gB, gBF,
     VF = 0.5 * mF * omegaF**2 * r**2
 
     def norm(n):
-        return 4.0 * np.pi * np.trapezoid(n * r**2, r)
+        return 4 * np.pi * np.trapezoid(n * r**2, r)
 
     def nB_of(muB, nF):
         return np.maximum((muB - VB - gBF * nF) / gB, 0.0)
 
     def nF_of(muF, nB):
-        arg = 2.0 * mF * np.maximum(muF - VF - gBF * nB, 0.0)
-        return np.sqrt(arg)**3 / (6.0 * np.pi**2)
+        arg = 2 * mF * np.maximum(muF - VF - gBF * nB, 0.0)
+        return np.sqrt(arg)**3 / (6 * np.pi**2)
 
     def find_mu(fn, partner, N_target, lo, hi):
         def resid(mu):
             return norm(fn(mu, partner)) - N_target
-        # Auto-expand bracket if needed
         for _ in range(30):
-            if resid(hi) > 0.0:
+            if resid(hi) > 0:
                 break
-            hi *= 2.0
+            hi *= 2
         for _ in range(30):
-            if resid(lo) < 0.0:
+            if resid(lo) < 0:
                 break
             lo -= abs(lo) + 0.1
         return brentq(resid, lo, hi, xtol=1e-10)
 
-    # Initial guess: non-interacting
-    muB = gB * NB / (4.0*np.pi/3.0 * r_max**3 / 8.0)   # rough centre density
-    muF = (6.0*np.pi**2 * NF / (4.0*np.pi/3.0 * (r_max/2.0)**3))**(2/3) / (2.0*mF)
+    muB = gB * NB / (4*np.pi/3 * r_max**3 / 8)
+    muF = (6*np.pi**2 * NF / (4*np.pi/3 * (r_max/2)**3))**(2/3) / (2*mF)
     nB  = nB_of(muB, np.zeros(Nr))
     nF  = nF_of(muF, np.zeros(Nr))
 
     for _ in range(max_iter):
         nB_old, nF_old = nB.copy(), nF.copy()
-
-        muB = find_mu(nB_of, nF, NB, lo=-100.0, hi=VB.max() + gB*NB + abs(gBF)*NF + 1.0)
+        muB = find_mu(nB_of, nF, NB, lo=-100.0, hi=VB.max() + gB*NB + abs(gBF)*NF + 1)
         nB_new = nB_of(muB, nF)
-
         muF = find_mu(nF_of, nB_new, NF, lo=-100.0,
-                      hi=VF.max() + (6*np.pi**2*NF)**(2/3)/(2*mF) + abs(gBF)*nB_new.max() + 1.0)
+                      hi=VF.max() + (6*np.pi**2*NF)**(2/3)/(2*mF) + abs(gBF)*nB_new.max() + 1)
         nF_new = nF_of(muF, nB_new)
-
-        nB = (1.0 - mix)*nB + mix*nB_new
-        nF = (1.0 - mix)*nF + mix*nF_new
-
+        nB = (1 - mix)*nB + mix*nB_new
+        nF = (1 - mix)*nF + mix*nF_new
         delta = max(np.max(np.abs(nB - nB_old)), np.max(np.abs(nF - nF_old)))
         if delta < tol:
             break
