@@ -14,11 +14,11 @@ mf = float(st.text_input("Enter a value for m_F", value = 1.0))
 
 nb, nf = 1000.0, 500.0
 label = ""
-if gbf == 0:
+if gbf == 0.0:
             label = "Non-interacting"
 elif gbf == gb:
             label = "Strong Repulsion"
-elif gbf > 0:
+elif gbf > 0.0:
             label = "Weak Repulsion"
 else:
             label = "Attraction"
