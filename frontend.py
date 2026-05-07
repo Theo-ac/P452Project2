@@ -14,9 +14,20 @@ mf = float(st.text_input("Enter a value for m_F", value = 1.0))
 
 nb, nf = 1000.0, 500.0
 
-r_ref, nB_ref, nF_ref, _, _ = bose_fermi_profiles(nb, nf, mb, mf, wb, wf, gb, gbf)
-cum_B = np.cumsum(nB_ref * r_ref**2) / (np.sum(nB_ref * r_ref**2) + 1e-30)
-cum_F = np.cumsum(nF_ref * r_ref**2) / (np.sum(nF_ref * r_ref**2) + 1e-30)
-xlim_max = max(r_ref[np.searchsorted(cum_B, 0.999)],
-               r_ref[np.searchsorted(cum_F, 0.999)]) * 1.4
-
+fig, ax = plt.subplots()
+r, nB, nF, muB, muF = bose_fermi_profiles(nb, nf, mb, mf, wb, wf, gb, gbf)
+ax.plot(r, nB, label='nB(r)  bosons', color='tab:blue', lw=2)
+ax.plot(r, nF, label='nF(r)  fermions', color='tab:orange', lw=2, ls='--')
+ax.set_title(label, fontsize=10)
+ax.set_xlabel('r / a_ho')
+ax.set_ylabel('Density n(r)')
+ax.legend(fontsize=8)
+ax.grid(alpha=0.3)
+ax.set_xlim(0, xlim_max)
+ax.annotate(f'muB={muB:.3f}, muF={muF:.3f}',
+            xy=(0.98, 0.95), xycoords='axes fraction',
+            ha='right', va='top', fontsize=8)
+fig.suptitle('Bose-Fermi Mixture Density Profiles (TF/LDA, spherical harmonic trap)',
+             fontsize=12)
+plt.tight_layout()
+plt.show()
