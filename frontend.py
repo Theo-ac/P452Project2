@@ -51,9 +51,11 @@ ax.set_ylabel(r'density $n(r)\;[a_{ho}^{-3}]$')
 ax.legend(fontsize=8)
 ax.grid(alpha=0.3)
 ax.set_xlim(0, xlim_max)
-ax.annotate(f'muB={muB:.3f}, muF={muF:.3f}',
-            xy=(0.98, 0.95), xycoords='axes fraction',
-            ha='right', va='top', fontsize=8)
+info = (f"$n_B(0) = {nB[1]:.3f}$\n"
+            f"$n_F(0) = {nF[1]:.3f}$")
+ax.annotate(info, xy=(0.97, 0.95), xycoords='axes fraction',
+                ha='right', va='top', fontsize=8.5,
+                bbox=dict(boxstyle='round,pad=0.3', fc='white', alpha=0.85))
 
 fig.text(0.01, 0.01, param_str, fontsize=8, va='bottom', family='monospace',
          bbox=dict(boxstyle='round', fc='lightyellow', alpha=0.9))
