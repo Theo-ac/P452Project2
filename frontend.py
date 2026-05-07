@@ -13,7 +13,16 @@ mb = float(st.text_input("Enter a value for m_B", value = 1.0))
 mf = float(st.text_input("Enter a value for m_F", value = 1.0))
 
 nb, nf = 1000.0, 500.0
-
+label = ""
+if gbf == 0:
+            label = "Non-interacting"
+else if gbf == gb:
+            label = "Strong Repulsion"
+else if gbf > 0:
+            label = "Weak Repulsion"
+else:
+            label = "Attraction"
+            
 fig, ax = plt.subplots()
 r, nB, nF, muB, muF = bose_fermi_profiles(nb, nf, mb, mf, wb, wf, gb, gbf)
 ax.plot(r, nB, label='nB(r)  bosons', color='tab:blue', lw=2)
