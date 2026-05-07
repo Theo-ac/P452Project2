@@ -24,7 +24,7 @@ elif gbf > 0.0:
             label = "Weak Repulsion"
 else:
             label = "Attraction"
-r_ref, nB_ref, nF_ref, _, _ = bose_fermi_profiles(**params, gBF=0.0)
+r_ref, nB_ref, nF_ref, _, _ = bose_fermi_profiles(nb, nf, mb, mf, wb, wf, gb, gBF=0.0)
 cum_B = np.cumsum(nB_ref * r_ref**2) / (np.sum(nB_ref * r_ref**2) + 1e-30)
 cum_F = np.cumsum(nF_ref * r_ref**2) / (np.sum(nF_ref * r_ref**2) + 1e-30)
 xlim_max = max(r_ref[np.searchsorted(cum_B, 0.999)],
