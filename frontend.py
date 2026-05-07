@@ -37,10 +37,10 @@ else:
 fig, ax = plt.subplots()
 r, nB, nF, muB, muF = bose_fermi_profiles(NB, NF, mb, mf, wb, wf, gb, gbf)
 
-param_str = (f'Assumptions (dimensionless HO units)\n'
-             f'  hbar = mB = omegaB = 1  →  a_ho = 1\n'
-             f'  mF = 40/87 = {mf:.3f}  (K-40 / Rb-87)\n'
-             f'  omegaF = {wf},  gB = {gb}\n'
+param_str = (f'Assumptions (dimensionless HO units), \n'
+             f'  hbar = mB = omegaB = 1  →  a_ho = 1, \n'
+             f'  mF = 40/87 = {mf:.3f}  (K-40 / Rb-87), \n'
+             f'  omegaF = {wf},  gB = {gb}, \n'
              f'  NB = {NB},  NF = {NF}')
 
 ax.plot(r, nB, label='nB(r)  bosons', color='tab:blue', lw=2)
