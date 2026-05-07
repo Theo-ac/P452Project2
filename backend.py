@@ -109,6 +109,11 @@ def h_sweep_from_spectrum(spectrum, N, h_vals, n_lowest=6):
 
     return gs_sz_arr, lowest_arr
 
+def tf_radius(r, n, frac=0.01):
+    """Outermost r where n > frac*max(n); proxy for the Thomas-Fermi edge."""
+    above = np.where(n > frac * n.max())[0]
+    return float(r[above[-1]]) if len(above) > 0 else 0.0
+
 def bose_fermi_profiles(NB, NF, mB, mF, omegaB, omegaF, gB, gBF,
                         r_max=None, Nr=600, tol=1e-5, max_iter=200, mix=0.4):
     """
