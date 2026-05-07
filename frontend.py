@@ -24,7 +24,7 @@ xlim_max = max(r_ref[np.searchsorted(cum_B, 0.999)],
 
 nfcenter = nF_ref[1]
 label = ""
-dmuF  = (6*np.pi**2 * nf)**(2/3) / (3 * mf * nf)
+dmuF  = (6*np.pi**2 * nfcenter)**(2/3) / (3 * mf * nfcenter)
 if gbf == 0.0:
             label = "Non-interacting"
 elif gbf**2 >= gb *dmuF :
