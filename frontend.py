@@ -50,9 +50,9 @@ ax.set_title(label, fontsize=10)
 ax.set_xlabel(r'$r\;/\;a_{ho}$')
 ax.set_ylabel(r'density $n(r)\;[a_{ho}^{-3}]$')
 ax.axvline(RTF_B, color='tab:blue',   lw=1, ls=':', alpha=0.7,
-               label=fr"$R_{{TF,B}}={RTF_B.2f}$")
+               label=fr"$R_{{TF,B}}={RTF_B}$")
 ax.axvline(RTF_F, color='tab:orange', lw=1, ls=':', alpha=0.7,
-               label=fr"$R_{{TF,F}}={RTF_F.2f}$")
+               label=fr"$R_{{TF,F}}={RTF_F}$")
 ax.legend(fontsize=8)
 ax.grid(alpha=0.3)
 ax.set_xlim(0, xlim_max)
